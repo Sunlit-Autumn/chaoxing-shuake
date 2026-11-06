@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         学习通自动刷课 / 自动播放 / 自动切节
 // @namespace    cx-auto
-// @version      5.3
+// @version      5.4
 // @description  自动倍速静音、递归接管 iframe 播放器、严格串行、无媒体章节停留后自跳
 // @author       Sunlit-Autumn
 // @match        *://*.chaoxing.com/*
@@ -93,6 +93,26 @@
       if (Math.abs(m.playbackRate - SPEED) > 0.01) { try { m.playbackRate = SPEED; } catch (e) {} }
     });
     log('bind ' + m.tagName + ' ' + (m.id || '-') + ' ' + ((m.duration || 0).toFixed(0)) + 's');
+  }
+
+  /* is this media's task point already marked complete on the page? */
+  function isMediaDone(m) {
+    let node = m;
+    try {
+      const w = m.ownerDocument && m.ownerDocument.defaultView;
+      if (w && w.frameElement) node = w.frameElement;
+    } catch (e) {}
+    let depth = 0;
+    while (node && depth < 5) {
+      try {
+        const t = node.textContent || '';
+        if (t.indexOf('\u4efb\u52a1\u70b9\u5df2\u5b8c\u6210') >= 0) return true;
+        if (node.querySelector && node.querySelector('.ans-job-icon-done, [class*="job-icon-done"]')) return true;
+      } catch (e) {}
+      node = node.parentElement;
+      depth++;
+    }
+    return false;
   }
 
   /* ---------------- catalog ---------------- */
@@ -205,7 +225,9 @@
       completedAt = 0;
     }
 
-    list.forEach(m => { if (mediaFinished(m)) finishedRing.add(m); });
+    list.forEach(m => {
+      if (mediaFinished(m) || isMediaDone(m)) finishedRing.add(m);
+    });
 
     const cur = list.find(m => !finishedRing.has(m));
 
@@ -220,6 +242,16 @@
       return;
     }
 
+    /* the page itself says every task point is complete: no need to wait */
+    const pageSaysDone = list.every(m => isMediaDone(m));
+    if (pageSaysDone) {
+      log('page confirms all ' + list.length + ' task point(s) completed, switching now');
+      completedAt = 0;
+      lastCount = -1;
+      if (Date.now() - lastSwitch > 8000) nextUnit();
+      return;
+    }
+
     if (!completedAt) {
       completedAt = Date.now();
       log('all ' + list.length + ' player(s) ended, waiting ' + (END_GRACE / 1000) + 's for server report');
@@ -227,7 +259,7 @@
     }
     if (Date.now() - completedAt < END_GRACE) return;
 
-    log('switching to next unit');
+    log('switching to next unit (no page confirmation after wait)');
     completedAt = 0;
     lastCount = -1;
     if (Date.now() - lastSwitch > 8000) nextUnit();
@@ -263,5 +295,5 @@
   window.cxScan = () => allUnits().map((e, i) => ({ i: i, done: isDone(e), t: (e.textContent || '').trim().slice(0, 30) }));
   window.cxJump = n => { const items = allUnits(); if (!items[n]) return 'bad index'; activate(items[n]); return (items[n].textContent || '').trim().slice(0, 30); };
 
-  log('injected v5.3 (top-frame only, recursive, dwell for no-media units)');
+  log('injected v5.4 (skip page-completed task points)');
 })();

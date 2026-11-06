@@ -4,8 +4,17 @@
 
 不是通用框架，只解决一件事：**打开章节页，剩下的它自己跑完**。
 
-[![安装脚本](https://img.shields.io/badge/%E5%AE%89%E8%A3%85-%E7%82%B9%E6%AD%A4-blue?style=for-the-badge)](https://raw.githubusercontent.com/Sunlit-Autumn/chaoxing-auto/main/chaoxing.user.js)
+[![安装脚本](https://img.shields.io/badge/%E5%AE%89%E8%A3%85-jsDelivr-blue?style=for-the-badge)](https://cdn.jsdelivr.net/gh/Sunlit-Autumn/chaoxing-auto@main/chaoxing.user.js)
 
+**一键安装地址**（Tampermonkey 会拦截并弹出安装页）：
+
+```
+https://cdn.jsdelivr.net/gh/Sunlit-Autumn/chaoxing-auto@main/chaoxing.user.js
+```
+
+> 国内网络访问 `raw.githubusercontent.com` 常被重置，所以主推 jsDelivr CDN。GitHub 原地址作为备选：
+> `https://raw.githubusercontent.com/Sunlit-Autumn/chaoxing-auto/main/chaoxing.user.js`
+>
 > 装了不生效？先看 [调试记录](docs/troubleshooting.md)。
 
 ---

@@ -4,6 +4,10 @@
 
 不是通用框架，只解决一件事：**打开章节页，剩下的它自己跑完**。
 
+![刷课效果](docs/images/hero.png)
+
+<sub>左侧目录自动打勾，中间视频 2 倍速自动播放，全程无需任何操作。</sub>
+
 [![安装脚本](https://img.shields.io/badge/%E5%AE%89%E8%A3%85-%E7%82%B9%E5%87%BB%E4%B8%8B%E8%BD%BD-blue?style=for-the-badge)](https://cdn.jsdelivr.net/gh/Sunlit-Autumn/chaoxing-shuake@main/chaoxing.user.js)
 
 **一键安装地址**（Tampermonkey 会拦截并弹出安装页）：

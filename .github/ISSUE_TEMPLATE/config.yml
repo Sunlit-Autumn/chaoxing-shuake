@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 装了不生效？先看调试记录
+    url: https://github.com/Sunlit-Autumn/chaoxing-shuake/blob/main/docs/troubleshooting.md
+    about: Edge 137+ 的「允许用户脚本」开关、混合内容拦截、播放器识别错误的成因和修法都写在里面
+  - name: 想问怎么用
+    url: https://github.com/Sunlit-Autumn/chaoxing-shuake#%E4%BD%BF%E7%94%A8
+    about: 安装和使用的完整流程在 README 里
